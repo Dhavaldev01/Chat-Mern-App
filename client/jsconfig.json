@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".", // Project root directory
+      "paths": {
+        "@/*": ["./src/*"] // Path alias for the src folder
+      }
+    },
+    "include": ["src"], // Includes all files in the src directory for compilation
+    "exclude": ["node_modules", "dist"] // Exclude node_modules and build output folder
+  }
+  
