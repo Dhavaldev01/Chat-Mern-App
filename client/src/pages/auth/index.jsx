@@ -6,37 +6,75 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import apiClient from "@/lib/api-client";
-import { SIGNUP_ROUTE } from "@/utils/constants";
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from "@/utils/constants";
+import { useNavigate } from "react-router-dom";
+import { useAppStore } from "@/store";
 
 function Auth() {
+
+  const navigate = useNavigate();
+  const { setUserInfo } = useAppStore();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [conformPassword, setConformPassword] = useState("");
 
-  const validateSignup = () =>{
-    if(!email.length){
-      toast.error("Email Is required"); 
+
+  const validateLogin = () => {
+    if (!email.length) {
+      toast.error("Email Is required");
       return false
     }
-    if(!password.length){
+    if (!password.length) {
+      toast.error("Password Is required ");
+      return false
+    }
+    return true;
+
+  }
+
+  const validateSignup = () => {
+    if (!email.length) {
+      toast.error("Email Is required");
+      return false
+    }
+    if (!password.length) {
       toast.error("Password Is required ");
       return false
     }
 
-    if(password !== conformPassword){
-      toast.error("Password And ConformPassword should be Same ." );
+    if (password !== conformPassword) {
+      toast.error("Password And ConformPassword should be Same .");
       return false
     }
     return true;
   }
 
-  const handleLogin = async () => {};
+  const handleLogin = async () => {
+    if (validateLogin()) {
+      const response = await apiClient.post(
+        LOGIN_ROUTE, { email, password },
+        { withCredentials: true }
+      );
+      if (response.data.user.id) {
+        setUserInfo(response.data.user);
+        if (response.data.user.profileSetup) navigate('/chat')
+        else navigate('/profile')
+      }
+      console.log(response);
+    }
+  };
 
   const handleSignup = async () => {
-    if(validateSignup()){
-      const response = await apiClient.post(SIGNUP_ROUTE,{email ,password});
+    if (validateSignup()) {
+      const response = await apiClient.post(
+        SIGNUP_ROUTE, { email, password },
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        setUserInfo(response.data.user);
+        navigate("/profile")
+      }
       console.log(response);
-      
     }
   };
   return (
@@ -57,7 +95,10 @@ function Auth() {
             </p>
           </div>
           <div className="flex items-center justify-center w-full">
-            <Tabs className="w-3/4">
+            <Tabs
+              className="w-3/4"
+              defaultValue="login"
+            >
               <TabsList className="bg-transparent rounded-none w-full ">
                 <TabsTrigger
                   value="login"
@@ -132,7 +173,7 @@ function Auth() {
         </div>
       </div>
     </div>
-  );    
+  );
 }
 
 export default Auth;
