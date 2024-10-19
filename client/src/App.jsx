@@ -36,7 +36,7 @@ function App() {
         } else {
           setUserInfo(undefined);
         }
-        console.log("GET_USER_INFO : ", response);
+        // console.log("GET_USER_INFO : ", response);
       } catch (error) {
         // console.log(error);
         setUserInfo(undefined);
