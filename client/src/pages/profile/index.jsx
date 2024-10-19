@@ -29,7 +29,7 @@ function Profile() {
       setLastName(userInfo.lastName);
       setSelectedColor(userInfo.color)
     }
-    if (userInfo.image) {
+    if(userInfo.image){
       setImage(`${HOST}/${userInfo.image}`)
     }
   }, [userInfo])
@@ -74,50 +74,50 @@ function Profile() {
   };
 
 
-  const handleNavigate = () => {
-    if (userInfo.profileSetup) {
+  const handleNavigate = () =>{
+    if(userInfo.profileSetup){
       navigate('/chat')
-    } else {
+    }else{
       toast.error("Please setup Profile .")
     }
   }
 
 
-  const handleFileInputClick = () => {
+  const handleFileInputClick = () =>{
     // alert("hello")
     fileInputRef.current.click();
   }
 
-  const handleImageChange = async (event) => {
+  const handleImageChange = async (event)=>{
 
     const file = event.target.files[0];
     // console.log(file);
-    if (file) {
+    if(file){
       const formData = new FormData();
-      formData.append("profile-image", file);
+      formData.append("profile-image" , file);
       const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE,
         formData,
-        { withCredentials: true }
+        {withCredentials:true}
       );
-      if (response.status === 200 && response.data.image) {
-        setUserInfo({ ...userInfo, image: response.data.image });
+      if(response.status === 200 && response.data.image){
+        setUserInfo({...userInfo, image:response.data.image});
         toast.success("Image updated successfully.")
       }
       const reder = new FileReader();
-      reder.onload = () => {
+      reder.onload = ()=> {
         setImage(reder.result);
       };
       reder.readAsDataURL(file);
     }
   }
 
-  const handelDeleteImage = async () => {
+  const handelDeleteImage = async() =>{
     try {
       const response = await apiClient.delete(REMOVE_PROFILE_IMAGE_ROUTE,
-        { withCredentials: true }
+        {withCredentials:true}
       );
-      if (response.status === 200) {
-        setUserInfo({ ...userInfo, image: null });
+      if(response.status === 200 ){
+        setUserInfo({...userInfo , image:null});
         toast.success("Image Remove successfully");
         setImage(null);
       }
@@ -127,20 +127,20 @@ function Profile() {
   }
 
   return (
-    <div className='h-screen flex items-center justify-center flex-col gap-10 bg-gray-100'>
-      <div
-        style={{ borderRadius: '20px' }}
-        className='flex flex-col gap-10 w-[80vw] md:w-[60vw] lg:w-[40vw] shadow-xl via-black p-6 bg-white'>
+    <div className='h-screen flex items-center justify-center flex-col  gap-10 bg-gray-900'>
+      <div 
+      style={{ borderRadius: '20px' }} 
+      className='flex flex-col gap-10 w-[80vw] md:w-[60vw] lg:w-[40vw] p-6 bg-gray-800 rounded-xl shadow-xl'>
         <div onClick={handleNavigate}>
-          <IoArrowBack className='text-4xl lg:text-6xl text-black cursor-pointer' onClick={() => navigate(-1)} />
+        <IoArrowBack className='text-4xl lg:text-6xl text-white cursor-pointer' onClick={() => navigate(-1)} />
         </div>
         <div className='grid grid-cols-2 gap-6'>
           <div
-            className='h-48 w-48 md:w-56 md:h-56 relative flex items-center justify-center'
+            className='relative flex items-center justify-center'
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
           >
-            <Avatar className="h-48 w-48 md:w-56 md:h-56 rounded-full overflow-hidden border border-gray-300">
+            <Avatar className="h-48 w-48 rounded-full overflow-hidden border border-gray-600">
               {
                 image
                   ? <AvatarImage
@@ -152,50 +152,51 @@ function Profile() {
                     {firstName ? firstName.charAt(0) : userInfo.email.charAt(0)}
                   </div>
               }
-            </Avatar>
-            {hovered && (
+                          {hovered && (
               <div className='absolute inset-0 flex items-center justify-center bg-black/50 rounded-full cursor-pointer'
-                onClick={image ? handelDeleteImage : handleFileInputClick}>
+              onClick={image ? handelDeleteImage : handleFileInputClick}>
                 {image
-                  ? <FaTrash className='text-white text-3xl cursor-pointer' onClick={() => setImage(null)} />
+                  ? <FaTrash className='text-white text-3xl ' onClick={() => setImage(null)} />
                   : <FaPlus className='text-white text-3xl cursor-pointer' onClick={() => {/* Implement image upload logic */ }} />
                 }
               </div>
             )}
-            <input
-              type='file'
-              ref={fileInputRef}
-              className='hidden'
-              onChange={handleImageChange}
-              name="profile-image" accept='.png ,.jpg ,.jpeg ,.svg ,.webp' />
+            </Avatar>
+
+            <input 
+            type='file' 
+            ref={fileInputRef} 
+            className='hidden' 
+            onChange={handleImageChange}
+            name="profile-image" accept='.png ,.jpg ,.jpeg ,.svg ,.webp'/>
           </div>
-          <div className='flex flex-col gap-5 text-black items-center'>
+          <div className='flex flex-col gap-5 text-white items-center'>
             <input
               placeholder="Email"
               type="email"
               disabled
               value={userInfo.email}
-              className="rounded-lg p-4 bg-transparent border border-gray-300 text-black font-semibold w-full"
+              className="rounded-lg p-4 bg-transparent border border-gray-600 text-white font-semibold w-full"
             />
             <input
               placeholder="First Name"
               type="text"
               onChange={(e) => setFirstName(e.target.value)}
               value={firstName}
-              className="rounded-lg p-4 bg-transparent border border-gray-300 text-black font-semibold w-full"
+              className="rounded-lg p-4 bg-transparent border border-gray-600 text-white font-semibold w-full"
             />
             <input
               placeholder="Last Name"
               type="text"
               onChange={(e) => setLastName(e.target.value)}
               value={lastName}
-              className="rounded-lg p-4 bg-transparent border border-gray-300 text-black font-semibold w-full"
+              className="rounded-lg p-4 bg-transparent border border-gray-600 text-white font-semibold w-full"
             />
             <div className='flex gap-3'>
               {
                 colors.map((color, index) =>
                   <div
-                    className={`${color} h-8 w-8 rounded-md cursor-pointer transition-all duration-300 ${selectedColor === index ? "outline outline-black/50 outline-1" : ""}`}
+                    className={`${color} h-8 w-8 rounded-md cursor-pointer transition-all duration-300 ${selectedColor === index ? "outline outline-white/50 outline-1" : ""}`}
                     key={index}
                     onClick={() => setSelectedColor(index)}
                   ></div>
