@@ -34,7 +34,6 @@ const server = app.listen(Port, () => {
   console.log(`Server is running http://localhost:${Port}`);
 });
 
-// console.log(databaseURL);
 setupSocket(server);
 
 mongoose

@@ -52,7 +52,8 @@ function Auth() {
   const handleLogin = async () => {
     if (validateLogin()) {
       const response = await apiClient.post(
-        LOGIN_ROUTE, { email, password },
+        LOGIN_ROUTE, 
+        { email, password },
         { withCredentials: true }
       );
       if (response.data.user.id) {
@@ -67,12 +68,13 @@ function Auth() {
   const handleSignup = async () => {
     if (validateSignup()) {
       const response = await apiClient.post(
-        SIGNUP_ROUTE, { email, password },
+        SIGNUP_ROUTE, 
+        { email, password },
         { withCredentials: true }
       );
       if (response.status === 200) {
-        setUserInfo(response.data.user);
-        navigate("/profile")
+        setUserInfo(response.data.user)
+        navigate("/profile");
       }
       console.log(response);
     }
