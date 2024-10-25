@@ -20,7 +20,7 @@ import { useAppStore } from "@/store"
 
 const NewDm = () => {
 
-  const { setSelectedChatType, setSelectedChatData } = useAppStore();
+  const {setSelectedChatData } = useAppStore();
   const [openNewContactModal, setOpenNewContactModal] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
 
