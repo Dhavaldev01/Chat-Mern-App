@@ -28,19 +28,32 @@ export const SocketProvider = ({ children }) => {
 
             
             const handleReceiveMessage = (message) =>{
-                const {selectedChatType, selectedChatData, addMessage} = useAppStore.getState();
+                const {selectedChatType, selectedChatData, addMessage , addContactsInDMContacts } = useAppStore.getState();
 
                 if(selectedChatType !== undefined && 
                     (selectedChatData._id === message.sender._id || 
                         selectedChatData._id === message.recipient._id
                     )){
-                        console.log("RCV :", message);
+                        // console.log("RCV :", message);
                         addMessage(message);
                     }
+                    addContactsInDMContacts(message);
             };        
 
-            socket.current.on("receiveMessage", handleReceiveMessage); 
 
+            const handleReciveChannelMessage = (message) => {
+                const {selectedChatType, selectedChatData, addMessage , addChannelInChannelList} = useAppStore.getState();
+
+                if(selectedChatType !== undefined && selectedChatData._id === message.channelId){
+                    // console.log("RCV CHENNAL : ",message)
+                    addMessage(message);
+                }
+                addChannelInChannelList(message);
+            };
+
+
+            socket.current.on("receiveMessage", handleReceiveMessage); 
+            socket.current.on("recive-channel-message" , handleReciveChannelMessage)
 
             return () => {
                 socket.current.disconnect();

@@ -15,7 +15,8 @@ const ChatHeader = () => {
         <div className="flex gap-3 items-center justify-center ">
           <div className="w-12 h-12 relative">
             {
-              selectedChatType === 'contact' ? (<Avatar className="h-12 w-12 rounded-full overflow-hidden border border-gray-300">
+              selectedChatType === 'contact' ? (
+              <Avatar className="h-12 w-12 rounded-full overflow-hidden border border-gray-300">
                 {
                   selectedChatData.image ? (
                     <AvatarImage
@@ -33,7 +34,8 @@ const ChatHeader = () => {
                     </div>
                     )
                 }
-              </Avatar>) : (<div className="bg-[#ffffff22] h-10 w-10 flex items-center justify-center rounded-full">
+              </Avatar>
+            ) : (<div className="bg-[#ffffff22] h-10 w-10 flex items-center justify-center rounded-full">
                 #
               </div>)
             }

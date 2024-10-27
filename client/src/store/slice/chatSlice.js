@@ -1,3 +1,4 @@
+import { Contact } from "lucide-react";
 
 export const createChatSlice = (set, get) => ({
     selectedChatType: undefined,
@@ -50,5 +51,39 @@ export const createChatSlice = (set, get) => ({
                 }
             ]
         })
+    },
+    addChannelInChannelList:(message)=> {
+        const channels = get().channels;
+        const data =  channels.find((channel) => channel._id === message.channelId);
+        const index = channels.findIndex(
+            (channel) => channel._id === message.channelId
+        );
+        if(index!== -1 && index !== undefined){
+            channels.splice(index, 1);
+            channels.unshift(data);
+        }
+    },
+
+    addContactsInDMContacts : (message) => {
+        const userId = get().userInfo.id;
+        const formId = 
+        message.sender._id === userId
+            ? message.recipient._id
+            : message.sender._id;
+        const formData =
+            message.sender._id === userId ? message.recipient : message.sender;
+        const dmContacts = get().directMessagesContacts;
+        const data = dmContacts.find((contact) => contact._id === formId );
+        const index = dmContacts.findIndex((contact) => contact._id === formData );
+        // console.log({data , index , dmContacts , userId , message , formData });
+        if(index !== -1 && index !== undefined){
+            // console.log("in if else condition");
+            dmContacts.splice(index , 1);
+            dmContacts.unshift(data);
+        }else {
+            // console.log("in else condition");
+            dmContacts.unshift(formData);
+        }
+        set({ directMessagesContacts: dmContacts});
     }
 });
