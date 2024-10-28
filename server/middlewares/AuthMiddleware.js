@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 export const verifyToken = (req, res, next) => {
     // console.log("Cookies : " ,req.cookies)
     const token = req.cookies.jwt;
-    if (!token) return res.status(401).send("Ypu are not authenticated");
+    if (!token) return res.status(401).send("You are not authenticated");
 
     jwt.verify(
         token,

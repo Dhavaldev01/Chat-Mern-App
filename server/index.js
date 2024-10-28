@@ -8,6 +8,7 @@ import contactsRoutes from "./routes/ContactRoutes.js";
 import setupSocket from "./socket.js";
 import messagesRoutes from "./routes/MessageRoutes.js";
 import channelRoutes from "./routes/ChannelRoutes.js";
+import morgan from 'morgan';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ app.use("/uploads/files",express.static("uploads/files"))
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(morgan('combined'));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/contacts',contactsRoutes);
