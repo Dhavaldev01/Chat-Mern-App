@@ -72,7 +72,7 @@ function Auth() {
         { email, password },
         { withCredentials: true }
       );
-      if (response.status === 200) {
+      if (response.status === 201) {
         setUserInfo(response.data.user)
         navigate("/profile");
       }
