@@ -10,6 +10,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist'  // Ensures Vite builds to 'dist' folder, which Vercel expects
-  }
+    outDir: 'dist', 
+  },
+  base: '/', 
 });
