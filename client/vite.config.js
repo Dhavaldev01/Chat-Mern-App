@@ -9,4 +9,7 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
+  build: {
+    outDir: 'dist'  // Ensures Vite builds to 'dist' folder, which Vercel expects
+  }
 });
